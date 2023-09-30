@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 import abi from "../constants/abi.json";
 const Connection = createContext();
@@ -56,18 +56,6 @@ const ConnectionProvider = ({ children }) => {
       return writeContract;
     } catch (error) {}
   };
-  // const eagerlyConnect = async () => {
-  //   if (window.ethereum === undefined) return;
-  //   const accounts = await window?.ethereum?.request({
-  //     method: "eth_accounts",
-  //   });
-  //   if (!accounts.length) return;
-  //   connectToContract(accounts);
-  // };
-  // useEffect(() => {
-  //   if (window.ethereum === undefined) return;
-  //   eagerlyConnect();
-  // }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Connection.Provider
