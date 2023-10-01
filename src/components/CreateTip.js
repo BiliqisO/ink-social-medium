@@ -2,62 +2,48 @@ import React, { useState } from "react";
 import { useConnection } from "../../src/context/connection";
 import { useCreateTip } from "../hooks/useCreateTip";
 
-export default function CreateTip({ id, destAcct }) {
+export default function CreateTip({ destAcct, id }) {
   const tipOnPost = useCreateTip();
-  const { account, active } = useConnection();
-  const [modal, setModal] = useState(false);
-  const [destinationAcct, setDestinationAcct] = useState();
-  const [amount, setAmount] = useState();
-  const [postId, setPostId] = useState();
-  const [sendingTx, setSendingTx] = useState(false);
+  const { active, account } = useConnection();
+  const [amount, setAmount] = useState(0);
 
-  const handleSendTip = async (e) => {
-    e.preventDefault();
-
-    setDestinationAcct(destAcct);
-    console.log(destinationAcct);
-    setPostId(id);
-    console.log(postId);
-    if (!destinationAcct || !amount || !postId)
+  const handleSendTip = async () => {
+    if (!active) return console.log("please, connect");
+    if (destAcct.toLowerCase() === account.toLowerCase())
+      return alert("you cannot tip yourself");
+    if (!amount)
       return alert("shey you no know say you suppose enter something ni 🤡🤡");
-    if (!active) return alert("please, connect");
 
     try {
-      setSendingTx(true);
-
-      const tx = await tipOnPost(destinationAcct, amount, postId);
-      const receipt = await tx.wait();
-      if (receipt.status === 0) return alert("tx failed");
-      alert("tweep sent!!");
-      setModal(!modal);
+      await tipOnPost(destAcct, amount, id);
     } catch (error) {
       console.log("error: ", error);
       if (error.info.error.code === 4001) {
         return alert("You rejected the request");
       }
       alert("something went wrong");
-    } finally {
-      setSendingTx(false);
     }
   };
-
   return (
     <>
-      <form onSubmit={handleSendTip}>
-        <label> send Tip</label>
+      <label> Tip Post 👇🏼</label>
+      <div className="tip-form">
         <input
           name="name"
           value={amount}
+          style={{ paddingRight: "4px", paddingTop: "5px" }}
           onChange={(e) => setAmount(e.target.value)}
           type="number"
         />
         <button
           value="Submit"
           type="submit"
+          onClick={() => handleSendTip()}
         >
-          TIP
+          SEND TIP
         </button>
-      </form>
+      </div>
+
       {/* <p>{destinationAcct}</p> */}
     </>
   );

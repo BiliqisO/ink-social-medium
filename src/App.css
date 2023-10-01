@@ -5,7 +5,7 @@ body {
   background-size: cover;
   -webkit-animation: slidein 100s;
   animation: slidein 100s;
-
+  background-attachment: fixed;
   -webkit-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
@@ -85,4 +85,12 @@ body {
   width: 50%;
   margin: auto;
   text-align: center;
+}
+.tip-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tip-form button {
+  padding: 10px 80px;
 }

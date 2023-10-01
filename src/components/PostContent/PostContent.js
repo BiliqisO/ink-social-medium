@@ -2,7 +2,7 @@ import "./PostContent.css";
 import useGetPosts from "../../hooks/useGetPosts";
 import { useConnection } from "../../context/connection";
 
-import CreateTip from "../CreateTip";
+import { Link } from "react-router-dom";
 
 export default function PostContent() {
   const { active } = useConnection();
@@ -10,14 +10,17 @@ export default function PostContent() {
 
   const showPost = getPosts.map((show) => {
     return (
-      <div className=" container-card  gradient-cards card ">
-        <p>{show.id}</p>
-        <p className="container-title"> {show.poster} inked</p>
-        <p className="">{show.content}</p>
-        <CreateTip
-          destAcct={show.poster}
-          id={show.id}
-        />
+      <div
+        className="container-card  gradient-cards card "
+        key={show.id}
+      >
+        <Link to={`/post/${show.id}`}>
+          <p className="container-title">
+            {" "}
+            {show.poster} <span>inked</span>{" "}
+          </p>
+          <p className="">{show.content}</p>
+        </Link>
       </div>
     );
   });
@@ -28,7 +31,7 @@ export default function PostContent() {
         showPost
       ) : (
         <div className="user-page">
-          <h1> WELCOME TO INK MEDIUM ✒️</h1>
+          <h1> WELCOME TO INK SOCIAL MEDIUM ✒️</h1>
           <p>Connect wallet to show friends inks</p>
         </div>
       )}

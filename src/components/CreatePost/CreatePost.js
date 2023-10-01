@@ -7,9 +7,7 @@ export default function CreatePost() {
   const createPost = useCreatePost();
   const { account, active } = useConnection();
   const [modal, setModal] = useState(false);
-  const [post, setPost] = useState(
-    "Count your bleessing and see what the lord has done"
-  );
+  const [post, setPost] = useState("The day is bright");
   const [sendingTx, setSendingTx] = useState(false);
 
   const handleSendPost = async (e) => {
@@ -20,10 +18,11 @@ export default function CreatePost() {
     try {
       setSendingTx(true);
       const tx = await createPost(post);
-      const receipt = await tx.wait();
-      if (receipt.status === 0) return alert("tx failed");
-      alert("tweep sent!!");
       setModal(!modal);
+      const receipt = await tx.wait();
+
+      if (receipt.status === 0) return alert("tx failed");
+      alert("ink posted!!");
     } catch (error) {
       console.log("error: ", error);
       if (error.info.error.code === 4001) {
@@ -32,6 +31,7 @@ export default function CreatePost() {
       alert("something went wrong");
     } finally {
       setSendingTx(false);
+      setModal(!modal);
     }
   };
   const toggleModal = () => {
@@ -66,7 +66,9 @@ export default function CreatePost() {
             <form onSubmit={handleSendPost}>
               <label>
                 ✒️
-                <input
+                <textarea
+                  rows="4"
+                  cols="50"
                   // className="ink"
                   type="text"
                   name="name"
@@ -79,7 +81,7 @@ export default function CreatePost() {
                 value="Submit"
                 type="submit"
               >
-                POST
+                POST INK
               </button>
             </form>
             <button
