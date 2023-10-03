@@ -3,7 +3,7 @@ import { useConnection } from "../context/connection";
 import { parseEther } from "ethers";
 
 export const useCreateTip = () => {
-  const { signedContract, connectToTokenContract, account } = useConnection();
+  const { signedContract, connectToTokenContract } = useConnection();
 
   const sendTip = useCallback(
     async (destinationAcct, amount, postId) => {
@@ -14,11 +14,15 @@ export const useCreateTip = () => {
 
       const appr = await tokenContract.approve(
         contract.target,
-        parseEther("10000")
+        parseEther(amount)
       );
       await appr.wait();
 
-      const tx = await contract.tipOnPost(destinationAcct, amount, postId);
+      const tx = await contract.tipOnPost(
+        destinationAcct,
+        parseEther(amount),
+        postId
+      );
       const receipt = await tx.wait();
       if (receipt.status === 0) return alert("tx failed");
       alert("tip sent!!");

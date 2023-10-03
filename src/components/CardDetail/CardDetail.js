@@ -11,17 +11,15 @@ const CardDetail = () => {
   const post = useGetPost(id);
 
   return (
-    <div>
-      <div className="post-container">
-        <h3>{post.content}</h3>
-        <p>ink from: {post.poster}</p>
-        <p> Tip Balance: {post.tips}</p>
-        <p> Date Inked: {formatDate(post.time)}</p>
-        <CreateTip
-          destAcct={post.poster}
-          id={post.id}
-        />
-      </div>
+    <div className="post-container">
+      <h3>{post.content}</h3>
+      <p>ink from: {post.poster}</p>
+      <p> Tip Balance: {post.tips}</p>
+      <p> Date Inked: {formatDate(post.time)}</p>
+      <CreateTip
+        destAcct={post.poster}
+        id={post.id}
+      />
     </div>
   );
 };
